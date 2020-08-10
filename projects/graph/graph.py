@@ -7,22 +7,27 @@ class Graph:
 
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
-        # intialize
+        # intialize the nodes
         self.vertices = {}
 
     def add_vertex(self, vertex_id):
         """
         Add a vertex to the graph.
         """
+        # set abstracts some conditionals 
         self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        # append to the vertex?
-        
-        pass  # TODO
+        # if both vertex parameters are present, add v2 to v1's set
+        # creates an edge between v1 and v2 if they both are
+        if v1 in self.vertices and v2 in self.vertices:
+            self.vertices[v1].add(v2)
+        # passing optional error from class
+        else:
+            raise IndexError("Vertex Does not exist!")
 
     def get_neighbors(self, vertex_id):
         """
@@ -38,15 +43,23 @@ class Graph:
         q = Queue()
         q.enqueue(starting_vertex)
 
-        visited = {}
+        visited = set() # not: visited = {}
 
-        # while loop
-        while q is not None:
-            # if q is in visited?
-            for next_vertex in q:
-                if next_vertex not in visited:
-                    q.enqueue(next_vertex)
-        pass  # TODO
+        # while loop, checking for the size of the Queue
+        # if it is greater than 0 then there are still unexplored elements
+        while q.size > 0: # not: while q is not None:
+            # dequeue the first vertex # not: if q is in visited?
+            # guided project used "v" as opposed to "vertex"
+            vertex = q.dequeue()
+            # if vertex hasn't been visited
+            if vertex not in visited:
+                # mark it as visited
+                visited.add(vertex) # not: q.enqueue(vertex)
+            # loop through and add all neighbors to the back of the queue
+            # guided project used the variable "next_vertex" as opposed to neighbor
+            for neighbor in self.get_neighbors(vertex):
+                # enqueue the neighbor
+                q.enqueue(neighbor)
 
     def dft(self, starting_vertex):
         """
