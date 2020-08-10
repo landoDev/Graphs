@@ -9,6 +9,7 @@ class Graph:
     def __init__(self):
         # intialize the nodes
         self.vertices = {}
+        self.path = []
 
     def add_vertex(self, vertex_id):
         """
@@ -57,7 +58,7 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        # Flip from queue to stack, enqueue to push and dequeue ot pop 👍 
+        # Flip from queue to stack, enqueue to push and dequeue to pop 👍 
         s = Stack()
         s.push(starting_vertex)
         
@@ -123,7 +124,6 @@ class Graph:
                     # append the neighbor to the back of the path
                     copy_path.append(neighbor)
                     q.enqueue(copy_path)
-            print(visited)
                 
         # return None
         return None
@@ -135,17 +135,11 @@ class Graph:
         depth-first order.
         """
         s = Stack()
-    
         s.push([starting_vertex])
-
         visited = set()
-  
         while s.size() > 0:
-     
             path = s.pop()
-     
             last_vertex = path[- 1]
-            
             if last_vertex not in visited:
          
                 if last_vertex == destination_vertex:
@@ -171,8 +165,12 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
-
+        self.path.append(starting_vertex)
+        for neighbor in self.get_neighbors(starting_vertex):
+            if list(neighbor) == destination_vertex:
+                return list(self.path)
+            self.dfs_recursive(neighbor, destination_vertex)
+    
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
     # https://github.com/LambdaSchool/Graphs/blob/master/objectives/breadth-first-search/img/bfs-visit-order.png
