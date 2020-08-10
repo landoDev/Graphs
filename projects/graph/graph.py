@@ -81,6 +81,7 @@ class Graph:
         print(starting_vertex)
         # base case: what are you???
         for neighbor in self.get_neighbors(starting_vertex):
+            # This is it... But I don't fully understand
             if neighbor < starting_vertex:
                 return
             self.dft_recursive(neighbor)
@@ -99,7 +100,8 @@ class Graph:
         # q.enqueue([starting_vertex_id]) # making it into a list
         q.enqueue([starting_vertex])
         # create a set to store visited vertices
-        vistied = set()
+        visited = set()
+
         # while queue is not empty
         while q.size() > 0:
             # dequeue the first PATH
@@ -107,20 +109,22 @@ class Graph:
             # grab the last vertex from the path
             last_vertex = path[-1]
             # check if the vertex has not been visited (the ability to break out)
-            if last_vertex not in vistied:
+            if last_vertex not in visited:
                 # is this vertex the target?
                 if last_vertex == destination_vertex:
                     # return the path
                     return path
                 # mark it as visited
-                vistied.add(last_vertex)
+                visited.add(last_vertex)
                 # then add a PATH to its neighbors to the back of the queue
                 for neighbor in self.get_neighbors(last_vertex):
                     # make a copy of the path
-                    copy_path = path
+                    copy_path = list(path)
                     # append the neighbor to the back of the path
                     copy_path.append(neighbor)
                     q.enqueue(copy_path)
+            print(visited)
+                
         # return None
         return None
 
@@ -134,28 +138,29 @@ class Graph:
     
         s.push([starting_vertex])
 
-        vistied = set()
+        visited = set()
   
         while s.size() > 0:
      
             path = s.pop()
      
             last_vertex = path[- 1]
-            print(last_vertex)
-
-            if last_vertex not in vistied:
+            
+            if last_vertex not in visited:
          
                 if last_vertex == destination_vertex:
                   
                     return path
             
-                vistied.add(last_vertex)
+                visited.add(last_vertex)
    
-                for neighbor in self.get_neighbors(path):
+                for neighbor in self.get_neighbors(last_vertex):
                    
-                    copy_path = path
+                    copy_path = list(path)
                     
                     copy_path.append(neighbor)
+
+                    s.push(copy_path)
        
         return None
     def dfs_recursive(self, starting_vertex, destination_vertex):
