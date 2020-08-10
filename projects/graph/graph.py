@@ -44,7 +44,6 @@ class Graph:
         q.enqueue(starting_vertex)
 
         visited = set() # not: visited = {}
-
         # while loop, checking for the size of the Queue
         # if it is greater than 0 then there are still unexplored elements
         while q.size > 0: # not: while q is not None:
@@ -66,7 +65,19 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Flip from queue to stack, enqueue to push and dequeue ot pop 👍 
+        s = Stack()
+        s.push(starting_vertex)
+
+        visited = set()
+        while s.size > 0: 
+            vertex = s.pop()
+            
+            if vertex not in visited:
+                visited.add(vertex) 
+
+            for neighbor in self.get_neighbors(vertex):
+                s.push(neighbor)
 
     def dft_recursive(self, starting_vertex):
         """
