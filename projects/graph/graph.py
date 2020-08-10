@@ -68,14 +68,11 @@ class Graph:
         # Flip from queue to stack, enqueue to push and dequeue ot pop 👍 
         s = Stack()
         s.push(starting_vertex)
-
         visited = set()
         while s.size > 0: 
             vertex = s.pop()
-            
             if vertex not in visited:
                 visited.add(vertex) 
-
             for neighbor in self.get_neighbors(vertex):
                 s.push(neighbor)
 
@@ -87,6 +84,19 @@ class Graph:
         This should be done using recursion.
         """
         pass  # TODO
+        # What is the base case? 
+        ## Nothing left in the stack
+        s = Stack()
+        s.push(starting_vertex)
+        visited = set()
+        if s.size < 1:
+            return
+        else:
+            vertex = s.pop()
+            # what do we pass it?
+            ## the neighbors
+            for neighbor in self.get_neighbors(vertex):
+                self.dft_recursive(neighbor)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
