@@ -68,12 +68,14 @@ class Graph:
         # Flip from queue to stack, enqueue to push and dequeue ot pop 👍 
         s = Stack()
         s.push(starting_vertex)
+        print(starting_vertex)
         visited = set()
         while s.size > 0: 
             vertex = s.pop()
             if vertex not in visited:
                 visited.add(vertex) 
             for neighbor in self.get_neighbors(vertex):
+                print(neighbor)
                 s.push(neighbor)
 
     def dft_recursive(self, starting_vertex):
@@ -83,18 +85,20 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
         # What is the base case? 
         ## Nothing left in the stack
         s = Stack()
         s.push(starting_vertex)
         visited = set()
+        print(starting_vertex)
         if s.size < 1:
             return
         else:
             vertex = s.pop()
             # what do we pass it?
             ## the neighbors
+            if vertex not in visited:
+                visited.add(vertex) 
             for neighbor in self.get_neighbors(vertex):
                 self.dft_recursive(neighbor)
 
@@ -104,7 +108,37 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        # ALMOST the same, difference is that if you find the target id STOP traversing
+        # Another big difference is that you will store the path 
+        
+        # create an empty queue and enqueue PATH to the Starting vetex ID
+        q = Queue()
+        # q.enqueue([starting_vertex_id]) # making it into a list
+        q.enqueue([starting_vertex])
+        # create a set to store visited vertices
+        vistied = set()
+        # while queue is not empty
+        while q.size > 0:
+            # dequeue the first PATH
+            path = q.dequeue()
+            # grab the last vertex from the path
+            last_vertex = path[:: len(path) - 1]
+            # check if the vertex has not been visited (the ability to break out)
+            if last_vertex not in vistied:
+                # is this vertex the target?
+                if last_vertex == destination_vertex:
+                    # return the path
+                    return path
+                # mark it as visited
+                vistied.add(last_vertex)
+                # then add a PATH to its neighbors to the back of the queue
+                for neighbor in self.get_neighbors(path):
+                    # make a copy of the path
+                    copy_path = path
+                    # append the neighbor to the back of the path
+                    copy_path.append(neighbor)
+        # return None
+        return None
 
     def dfs(self, starting_vertex, destination_vertex):
         """
