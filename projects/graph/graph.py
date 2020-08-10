@@ -9,6 +9,8 @@ class Graph:
     def __init__(self):
         # intialize the nodes
         self.vertices = {}
+        self.stack = Stack()
+        self.visited = set()
 
     def add_vertex(self, vertex_id):
         """
@@ -42,23 +44,15 @@ class Graph:
         """
         q = Queue()
         q.enqueue(starting_vertex)
-
-        visited = set() # not: visited = {}
-        # while loop, checking for the size of the Queue
-        # if it is greater than 0 then there are still unexplored elements
-        while q.size > 0: # not: while q is not None:
-            # dequeue the first vertex # not: if q is in visited?
-            # guided project used "v" as opposed to "vertex"
+        visited = set()
+        while q.size() > 0: 
             vertex = q.dequeue()
-            # if vertex hasn't been visited
             if vertex not in visited:
-                # mark it as visited
-                visited.add(vertex) # not: q.enqueue(vertex)
-            # loop through and add all neighbors to the back of the queue
-            # guided project used the variable "next_vertex" as opposed to neighbor
-            for neighbor in self.get_neighbors(vertex):
-                # enqueue the neighbor
-                q.enqueue(neighbor)
+                visited.add(vertex)
+                print(vertex) 
+                for neighbor in self.get_neighbors(vertex):
+                    q.enqueue(neighbor)
+       
 
     def dft(self, starting_vertex):
         """
@@ -68,15 +62,15 @@ class Graph:
         # Flip from queue to stack, enqueue to push and dequeue ot pop 👍 
         s = Stack()
         s.push(starting_vertex)
-        print(starting_vertex)
+        
         visited = set()
-        while s.size > 0: 
+        while s.size() > 0:
             vertex = s.pop()
             if vertex not in visited:
-                visited.add(vertex) 
-            for neighbor in self.get_neighbors(vertex):
-                print(neighbor)
-                s.push(neighbor)
+                visited.add(vertex)
+                print(vertex) 
+                for neighbor in self.get_neighbors(vertex):
+                    s.push(neighbor)
 
     def dft_recursive(self, starting_vertex):
         """
@@ -85,23 +79,17 @@ class Graph:
 
         This should be done using recursion.
         """
-        # What is the base case? 
-        ## Nothing left in the stack
-        s = Stack()
-        s.push(starting_vertex)
-        visited = set()
-        print(starting_vertex)
-        if s.size < 1:
+        self.stack.push(starting_vertex)
+        if self.stack.size() < 1:
             return
         else:
-            vertex = s.pop()
-            # what do we pass it?
-            ## the neighbors
-            if vertex not in visited:
-                visited.add(vertex) 
-            for neighbor in self.get_neighbors(vertex):
-                self.dft_recursive(neighbor)
-
+            vertex = self.stack.pop()
+            print(vertex)
+            if vertex not in self.visited:
+                self.visited.add(vertex)
+                for neighbor in self.get_neighbors(vertex):
+                    self.dft_recursive(neighbor)
+        
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
@@ -110,7 +98,6 @@ class Graph:
         """
         # ALMOST the same, difference is that if you find the target id STOP traversing
         # Another big difference is that you will store the path 
-        
         # create an empty queue and enqueue PATH to the Starting vetex ID
         q = Queue()
         # q.enqueue([starting_vertex_id]) # making it into a list
@@ -118,12 +105,13 @@ class Graph:
         # create a set to store visited vertices
         vistied = set()
         # while queue is not empty
-        while q.size > 0:
+        while q.size() > 0:
             # dequeue the first PATH
             path = q.dequeue()
             # grab the last vertex from the path
-            last_vertex = path[:: len(path) - 1]
+            last_vertex = path[-1]
             # check if the vertex has not been visited (the ability to break out)
+            print(last_vertex)
             if last_vertex not in vistied:
                 # is this vertex the target?
                 if last_vertex == destination_vertex:
@@ -132,7 +120,7 @@ class Graph:
                 # mark it as visited
                 vistied.add(last_vertex)
                 # then add a PATH to its neighbors to the back of the queue
-                for neighbor in self.get_neighbors(path):
+                for neighbor in self.get_neighbors(last_vertex):
                     # make a copy of the path
                     copy_path = path
                     # append the neighbor to the back of the path
@@ -152,11 +140,12 @@ class Graph:
 
         vistied = set()
   
-        while s.size > 0:
+        while s.size() > 0:
      
             path = s.pop()
      
-            last_vertex = path[:: len(path) - 1]
+            last_vertex = path[- 1]
+            print(last_vertex)
 
             if last_vertex not in vistied:
          
