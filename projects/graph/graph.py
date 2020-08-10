@@ -7,31 +7,45 @@ class Graph:
 
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
+        # intialize
         self.vertices = {}
 
     def add_vertex(self, vertex_id):
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
+        # append to the vertex?
+        
         pass  # TODO
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        return self.vertices[vertex_id]
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
+        q = Queue()
+        q.enqueue(starting_vertex)
+
+        visited = {}
+
+        # while loop
+        while q is not None:
+            # if q is in visited?
+            for next_vertex in q:
+                if next_vertex not in visited:
+                    q.enqueue(next_vertex)
         pass  # TODO
 
     def dft(self, starting_vertex):
