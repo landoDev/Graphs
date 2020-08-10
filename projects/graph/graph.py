@@ -9,8 +9,6 @@ class Graph:
     def __init__(self):
         # intialize the nodes
         self.vertices = {}
-        self.stack = Stack()
-        self.visited = set()
 
     def add_vertex(self, vertex_id):
         """
@@ -79,16 +77,14 @@ class Graph:
 
         This should be done using recursion.
         """
-        self.stack.push(starting_vertex)
-        if self.stack.size() < 1:
-            return
-        else:
-            vertex = self.stack.pop()
-            print(vertex)
-            if vertex not in self.visited:
-                self.visited.add(vertex)
-                for neighbor in self.get_neighbors(vertex):
-                    self.dft_recursive(neighbor)
+        # print the vertex
+        print(starting_vertex)
+        # base case: what are you???
+        for neighbor in self.get_neighbors(starting_vertex):
+            if neighbor < starting_vertex:
+                return
+            self.dft_recursive(neighbor)
+            
         
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -111,7 +107,6 @@ class Graph:
             # grab the last vertex from the path
             last_vertex = path[-1]
             # check if the vertex has not been visited (the ability to break out)
-            print(last_vertex)
             if last_vertex not in vistied:
                 # is this vertex the target?
                 if last_vertex == destination_vertex:
@@ -125,6 +120,7 @@ class Graph:
                     copy_path = path
                     # append the neighbor to the back of the path
                     copy_path.append(neighbor)
+                    q.enqueue(copy_path)
         # return None
         return None
 
