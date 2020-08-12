@@ -8,6 +8,7 @@
 #         self.vertices = {}
 
 from util import Stack
+# stack imported but is the same as everyone else's
 class Graph:
 
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
@@ -46,10 +47,11 @@ def earliest_ancestor(ancestors, starting_node):
     lineage = Graph()
     # add vertex
     # add the edges
-    for relationship in ancestors:
-        lineage.add_vertex(relationship[0])
-        lineage.add_vertex(relationship[1])
-        lineage.add_edge(relationship[1], relationship[0])
+    for parent, child in ancestors:
+        lineage.add_vertex(parent)
+        lineage.add_vertex(child)
+    for parent, child in ancestors:
+        lineage.add_edge(child, parent)
     
     # initiate a list of paths?
     list_paths = []
@@ -63,7 +65,6 @@ def earliest_ancestor(ancestors, starting_node):
     while s.size() > 0:
         # take path off the top
         path = s.pop()
-        print(path)
         # initialize the last vertex
         v = path[- 1]
         # if vertex hasn't been visited
@@ -75,20 +76,42 @@ def earliest_ancestor(ancestors, starting_node):
                 copy_path = list(path)
                 copy_path.append(neighbor)
                 s.push(copy_path)
-        if len(path) > 1:
-            list_paths.append(path)
-    print(list_paths)
-    if len(list_paths) < 2:
+        
+        list_paths.append(path)
+    # print(list_paths)
+    if len(list_paths) <= 1:
         return -1
     else:
-        # print(list_paths[-1][-1])
-        return list_paths[-1][-1]
+        longest = []
+        eldest = list_paths[-1][-1]
+
+        for bloodline in list_paths:
+            # print("bloodline", bloodline[-1])
+            # print("eldest", eldest)
+            # find the lenght of the bloodline
+            length = len(bloodline)
+            # is it the longest one in longest?
+            if len(longest) < 1:
+                longest.append(bloodline)
+            for elder_path in longest:
+                if len(elder_path) < length:
+                    longest = [bloodline]
+                elif len(elder_path) == length:
+                    longest = longest + [bloodline]
+
+        # print("longest", longest)
+        if len(longest) > 1:
+            for elder in longest:
+                if elder[-1] < eldest:
+                    eldest = elder[-1]
+        # print(eldest)
+        return eldest
 
 
-# test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
+test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
 
 # earliest_ancestor(test_ancestors, 1)
-# print(earliest_ancestor(test_ancestors, 1))
+print(earliest_ancestor(test_ancestors, 3))
 # if earliest_ancestor == 10:
 #     print(True)
 # else:
