@@ -70,11 +70,10 @@ class SocialGraph:
         possible_friends = []
 
         # avoid duplicates by ensuring first num < second num, 
-        ## ensures that lowest num is always the first value in tuple
         # loop through users and 
         for user_id in self.users:
             #  for each user id
-            # I need this explained to me again 
+            ## ensures that lowest num is always the first value in tuple
             for friend_id in range(user_id + 1, self.last_id + 1):
                 # append the next user to the possible friends
                 possible_friends.append((user_id, friend_id))
@@ -103,10 +102,7 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        # Use what you've already done. Island count most similar?, take a look and pseudocode that?
-        # Try an over psuedocode approach
-        # ALMOST the same, difference is that if you find the target id STOP traversing
-        # Another big difference is that you will store the path 
+       
         # key word: SHORTEST => use bfs (bft?)
         # looking for a path output (the shortest this time)
         # create an empty queue and enqueue PATH to the Starting vetex ID
@@ -115,27 +111,29 @@ class SocialGraph:
         q.enqueue([user_id])
 
         # create a set to store visited vertices
+        # key probably needs to be each of the users friends with the value being the list of paths
+        ## or value needs to be the shortest path
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
    
         # while queue is not empty
-     
-            # dequeue the first PATH
-           
-            # grab the last vertex from the path
-            
-            # check if the vertex has not been visited (the ability to break out)
-            
-                # is this vertex the target?
-                
-                    # return the path
-              
+        while q.size() > 0:
+            # dequeue the first PATH (value)
+            value = q.dequeue()
+            # grab the last key from the path
+            key = value[-1]
+            # check if the key has not been visited (the ability to break out)
+            if key not in visited:
                 # mark it as visited
-
-                # then add a PATH to its neighbors to the back of the queue
+                visited[key] = value
+                # then add a PATH (value) to its neighbors to the back of the queue
+                # cruicial, "neighbors" are friends
+                for friend in self.friendships: 
                     # make a copy of the path
-
+                    value_copy = list(value)
                     # append the neighbor to the back of the path
+                    value_copy.append(friend)
+                    q.enqueue(value_copy)
         return visited
 
 
