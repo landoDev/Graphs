@@ -4,6 +4,20 @@ class User:
     def __init__(self, name):
         self.name = name
 
+# if this gets too deep, pull this into it's own file and import it
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 class SocialGraph:
     def __init__(self):
         self.last_id = 0
@@ -72,7 +86,6 @@ class SocialGraph:
         # not following why we are doing this formula but it's important
         ## maybe to create an average/range for n?
         n = num_users * avg_friendships // 2
-
         # loop through the range of n
         for i in range(n):
             # grab a possible friendship from the list
@@ -90,13 +103,39 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        # key word: SHORTEST => use bfs (bft?)
-        # looking for a path output (the shortest this time)
-        # look at the simpler logic of earliest ancestor
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
         # Use what you've already done. Island count most similar?, take a look and pseudocode that?
         # Try an over psuedocode approach
+        # ALMOST the same, difference is that if you find the target id STOP traversing
+        # Another big difference is that you will store the path 
+        # key word: SHORTEST => use bfs (bft?)
+        # looking for a path output (the shortest this time)
+        # create an empty queue and enqueue PATH to the Starting vetex ID
+        q = Queue()
+        # q.enqueue([]) # making it into a list
+        q.enqueue([user_id])
+
+        # create a set to store visited vertices
+        visited = {}  # Note that this is a dictionary, not a set
+        # !!!! IMPLEMENT ME
+   
+        # while queue is not empty
+     
+            # dequeue the first PATH
+           
+            # grab the last vertex from the path
+            
+            # check if the vertex has not been visited (the ability to break out)
+            
+                # is this vertex the target?
+                
+                    # return the path
+              
+                # mark it as visited
+
+                # then add a PATH to its neighbors to the back of the queue
+                    # make a copy of the path
+
+                    # append the neighbor to the back of the path
         return visited
 
 
