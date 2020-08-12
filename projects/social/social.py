@@ -45,8 +45,25 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        # loop through the range from 0 to the num of users
 
         # Create friendships
+        # generate all possible friendship combinations, track the list 
+
+        # avoid duplicates by ensuring first num < second num, 
+        ## ensures that lowest num is always the first value in tuple
+
+        # shuffle the possible friendships
+
+        # create friendships for the n num of pairs of the list
+        # not following why we are doing this formula but it's important
+        ## maybe to create an average/range for n?
+        # n = num_users * avg_friendships // 2
+
+        # loop through the range of n
+            # grab a possible friendship from the list
+
+            # pass the user id and friend_id to add_friendship()
 
     def get_all_social_paths(self, user_id):
         """
@@ -57,8 +74,13 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+        # key word: SHORTEST => use bfs (bft?)
+        # looking for a path output (the shortest this time)
+        # look at the simpler logic of earliest ancestor
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        # Use what you've already done. Island count most similar?, take a look and pseudocode that?
+        # Try an over psuedocode approach
         return visited
 
 
