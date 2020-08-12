@@ -92,6 +92,7 @@ class SocialGraph:
             user_id, friend_id = friendship
             # pass the user id and friend_id to add_friendship()
             self.add_friendship(user_id, friend_id)
+    
 
     def get_all_social_paths(self, user_id):
         """
@@ -125,11 +126,15 @@ class SocialGraph:
             # check if the key has not been visited (the ability to break out)
             if key not in visited:
                 # mark it as visited
-                visited[key] = value
+                print(self.friendships[key])
+                visited[key] = list(self.friendships[key])
                 # then add a PATH (value) to its neighbors to the back of the queue
-                # cruicial, "neighbors" are friends
-                for friend in self.friendships: 
-                    # make a copy of the path
+                # print("friendships", self.friendships)
+                # print("value", value)
+                # print("visited", visited)
+                # need to add the value of the key's neighbors
+                for friend in visited[key]:
+                #     # make a copy of the path
                     value_copy = list(value)
                     # append the neighbor to the back of the path
                     value_copy.append(friend)
