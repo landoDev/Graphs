@@ -53,19 +53,27 @@ s = Stack()
 visited_rooms = set()
 explored_paths = set()
 s.push(room_graph[0])
+# I need to track the room I'm in
+# # I DON'T KNOW HOW TO TRACK THE ROOM 
 # while s.size() > 0
+
+
+# my raw try MAY HAVE TO BE SCRAPPED, WILL HAVE TO START FROM SCRATCH
 while s.size() > 0:
     room = s.pop()
+    print(room)
     # pick a random unexplored direction in the room
     # use random sampling
     # direction = random.something(current_room)
     direction = random.randint(1, len(room) - 1)
     command = list(room[direction].keys())
-    print(command)
+    # print(command)
     # append the direction key to traversal_path
     traversal_path.append(command)
-    # mark the path as explored
-    # travel to that direction
+        # mark the path as explored
+        # travel to that direction
+    print(room_graph[direction])
+    # s.push(room_graph[direction])
     
 # bfs to nearest unexplored room
 # while queue isn't empty
