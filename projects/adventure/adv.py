@@ -48,33 +48,32 @@ traversal_path = []
 # write a backtracking algorithm
 
 # Start by writing an algorithm that picks a random unexplored direction from the player's current room, travels and logs that direction, then loops:
+# print("player room id", player.current_room.id)
+# print("player get exits", player.current_room.get_exits())
+# print("BRUH")
+
+press_start = player.current_room.id
+
 # s = Stack()
 s = Stack()
 visited_rooms = set()
 explored_paths = set()
-s.push(room_graph[0])
-# I need to track the room I'm in
-# # I DON'T KNOW HOW TO TRACK THE ROOM 
+s.push(press_start)
+
+# # I DON'T KNOW HOW TO TRACK THE ROOM => See BRUH print above. Finally thought to print it
 # while s.size() > 0
 
-
-# my raw try MAY HAVE TO BE SCRAPPED, WILL HAVE TO START FROM SCRATCH
 while s.size() > 0:
     room = s.pop()
-    print(room)
+    # these prints are the keys to putting this together.
+    print("room",room) # room is id... do I want the path?
+    print(room_graph[room])
+    print(player.current_room.get_exits())
     # pick a random unexplored direction in the room
     # use random sampling
-    # direction = random.something(current_room)
-    direction = random.randint(1, len(room) - 1)
-    command = list(room[direction].keys())
-    # print(command)
     # append the direction key to traversal_path
-    traversal_path.append(command)
         # mark the path as explored
         # travel to that direction
-    print(room_graph[direction])
-    # s.push(room_graph[direction])
-    
 # bfs to nearest unexplored room
 # while queue isn't empty
     # if the path is in 
@@ -83,23 +82,14 @@ while s.size() > 0:
 
 # run the dft again
 
-
-
-
-
-    # paths = s.pop()
-    # room = paths[-1]
-
-    # if room not in visited:
-        # we want a key and a value
-        # explored[room] = paths
-        
-        # # get neighbors (get friends)
-        # for friend in self.friendships[v]:
-        #     path_copy = list(path) # can also do path.copy()
-        #     path_copy.append(friend)
-        #     q.enqueue(path_copy)
-
+    # older implementation that did not work lol, but may still be helpful
+    # direction = random.something(current_room)
+    # direction = random.randint(1, len(room) - 1)
+    # command = list(room[direction].keys())
+    # print(command)
+    # traversal_path.append(command)
+    # print(room_graph[direction])
+    # s.push(room_graph[direction])
 
 
 # TRAVERSAL TEST
