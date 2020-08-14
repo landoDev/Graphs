@@ -52,26 +52,61 @@ traversal_path = []
 # print("BRUH")
 
 press_start = player.current_room.id
-turn_around = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+traversal_graph = {}
 s = Stack()
 s.push(press_start)
 
 # travel log loop
+# while len(traversal_path) < len(room_graph):
+while s.size() > 0:
 # track previous room
-# direction = random n e s w
-# traverse to room player.travel(direction)
-# player current room
-# exits = player.get_exits
-# add room: ['n': '?']
-# if direction == '?'
-# record where you went
-# traversal graph[prev room][direction] = current room id
-# record where you came from 
-# traversal graph[current room][opposite direction] = prev room id
-# I was in x, went y direction, now in z room
-# repeat to dead end
-# check list of unexplored exits
-# if no value == '?'
+    start_room = s.pop()
+    print(start_room)
+    # player current room
+    # exits = player.get_exits
+    exits = player.current_room.get_exits()
+    print(exits)
+    if start_room not in traversal_graph:
+        traversal_graph[start_room] = {}
+        for pathway in exits:
+            traversal_graph[start_room][pathway] = '?'
+    # direction = random n e s w random
+    # traverse to room player.travel(direction)
+    print(traversal_graph)
+    # filter directions to only be unexplored
+    unexplored_exits = [way for way in traversal_graph[start_room] if way == '?']
+    direction = random.choice(unexplored_exits)
+    print(direction)
+    # if direction == '?'
+    player.travel(direction)
+    traversal_path.append(direction)
+    # print(start_room)
+    # print(player.current_room.id)
+    # record where you went
+    # traversal graph[prev room][direction] = current room id
+    # traversal_graph[start_room][direction] = player.current_room.id
+    # print(traversal_graph)
+    # record where you came from 
+    # traversal graph[current room][opposite direction] = prev room id
+    # I was in x, went y direction, now in z room
+    # if traversal_graph[player]
+    # traversal_graph[player.current_room.id][reverse[direction]] = start_room
+    # print(traversal_graph)
+    # repeat to dead end
+
+    # bfs
+    # check list of unexplored exits
+    # if no value == '?'
+
+
+    s.push(player.current_room.id)
+
+
+
+
+
+
 # look at log, go back until 
 # need a travel log, list or dictionary
     # i.e I've gone north from room 1
