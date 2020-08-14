@@ -1,7 +1,6 @@
 from room import Room
 from player import Player
 from world import World
-from map_graph import Map
 
 import os
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -20,7 +19,7 @@ map_file = dirpath + "/maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+# map_file = dirpath + "/maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -56,24 +55,51 @@ press_start = player.current_room.id
 
 # s = Stack()
 s = Stack()
-visited_rooms = set()
-explored_paths = set()
+visited = set()
+explored = {}
 s.push(press_start)
 
 # # I DON'T KNOW HOW TO TRACK THE ROOM => See BRUH print above. Finally thought to print it
 # while s.size() > 0
 
 while s.size() > 0:
+    # print(visited)
     room = s.pop()
-    # these prints are the keys to putting this together.
-    print("room",room) # room is id... do I want the path?
-    print(room_graph[room])
-    print(player.current_room.get_exits())
-    # pick a random unexplored direction in the room
-    # use random sampling
+    exits = player.current_room.get_exits()
+    unexplored = []
+    # print("room",room) # room is id... do I want the path?
+    # print(room_graph[room])
+    # print(player.current_room.get_exits())
+    if room not in visited:
+        # visited[room] = {}
+        visited.add(room)
+        # pick a random unexplored direction in the room
+        # use random sampling
+        if len(exits) == 1:
+            direction = exits[0]
+        else:
+            rand_index = random.randint(0, len(exits) - 1)
+            direction = exits[rand_index]
+        print("direction", direction)
     # append the direction key to traversal_path
+        traversal_path.append(direction)
+        # print(traversal_path)
         # mark the path as explored
+        if direction not in explored:
+            explored[room] = [direction]
+        elif direction in explored[room]:
+            find_unexplored = [way for way in exits if way not in explored[room]]
+            print("filtered explored", find_unexplored)
+        else:
+            find_unexplored = [way for way in exits if way not in explored[room]]
+            print("filtered explored", find_unexplored)
+            print("this ran")
+            explored[room].append(direction)
+        print("explored", explored)
         # travel to that direction
+        
+        player.travel(direction)
+        s.push(player.current_room.id)
 # bfs to nearest unexplored room
 # while queue isn't empty
     # if the path is in 
