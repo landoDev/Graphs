@@ -77,10 +77,10 @@ while s.size() > 0:
     print(traversal_graph)
     # filter directions to only be random unexplored
     unexplored_exits = [way for way in traversal_graph[start_room] if traversal_graph[start_room][way] == '?']
-    direction = random.choice(unexplored_exits)
-    print(direction)
     # # if direction == '?' continue you dft
     if len(unexplored_exits) > 0:
+        direction = random.choice(unexplored_exits)
+        print(direction)
         # player.travel(direction)
         player.travel(direction)
         traversal_path.append(direction)
@@ -102,6 +102,8 @@ while s.size() > 0:
         # I was in x, went y direction, now in z room
         traversal_graph[next_room][reverse[direction]] = start_room
         print(traversal_graph)
+
+        s.push(next_room)
     # repeat to dead end
     # else do bfs 
 
