@@ -16,10 +16,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = dirpath + "/maps/test_line.txt"
-map_file = dirpath + "/maps/test_cross.txt"
+# map_file = dirpath + "/maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = dirpath + "/maps/main_maze.txt"
+map_file = dirpath + "/maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -30,36 +30,28 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
-# Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-# will populate and be the directions to cover the graph
 traversal_path = []
-# world is a graph, the graph
-# map (test_line) 
-# print("room_graph", room_graph)
-# {0: [(3, 5), {'n': 1}], 1: [(3, 6), {'s': 0, 'n': 2}], 2: [(3, 7), {'s': 1}]}
-# print("starting room")
-# construct a traversal graph starting in room 0
-# just  
 
-# Write a dft to get all the paths
-    # in every room write a bfs for a room that has an unvisited path
-# write a backtracking algorithm
-
-# Start by writing an algorithm that picks a random unexplored direction from the player's current room, travels and logs that direction, then loops:
-# print("player room id", player.current_room.id)
-# print("player get exits", player.current_room.get_exits())
-# print("BRUH")
 
 press_start = player.current_room.id
 reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 traversal_graph = {}
 explored = {}
 current_path = []
+limit_break = 0
+
+print("ROOM LENGTH", len(room_graph))
 
 def traverse(starting_point):
     # base case
-    if len(explored) == len(room_graph):
+    print("TRAVERSAL STATUS", traversal_graph, len(traversal_graph))
+    # Every room has been explored
+    # for room in traversal_graph:
+    #     print("TRAVERSAL",room)
+    #     print("EXPLORED")
+    print("TRAVERSAL",len(traversal_graph))
+    print("EXPLORED", len(explored))
+    if len(explored) == 500:
         return
 
     s = Stack()
@@ -124,8 +116,6 @@ def traverse(starting_point):
     traverse(next_traverse)
         
 
-
-# infinite loop is happening here
 def find_unexplored(starting_point):
     # end point is "?", return the shortest path to "?"
     q = Queue()
@@ -179,16 +169,14 @@ traverse(press_start)
 # next_traverse = find_unexplored(player.current_room.id)
 # print("next", next_traverse)
 # traverse(next_traverse)
-# while len(explored) < len(room_graph):
-#     if limit_break > 10:
-#         break
+# while len(traversal_graph) < len(room_graph):
 #     traverse(press_start)
 #     print("LEN of my graph", len(explored))
 #     print("LEN of room graph", len(room_graph))
 #     next_traverse = find_unexplored(player.current_room.id)
 #     print("next", next_traverse)
 #     traverse(next_traverse)
-#     limit_break += 1
+# #     limit_break += 1
 
     # else do bfs for the first room that has a '?'
 
