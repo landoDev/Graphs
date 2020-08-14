@@ -16,10 +16,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = dirpath + "/maps/test_line.txt"
-map_file = dirpath + "/maps/test_cross.txt"
+# map_file = dirpath + "/maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = dirpath + "/maps/main_maze.txt"
+map_file = dirpath + "/maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -56,11 +56,16 @@ reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 traversal_graph = {}
 s = Stack()
 s.push(press_start)
-
+limit_break = 0
 # travel log loop
 # while len(traversal_path) < len(room_graph):
+
+print("path start")
 while s.size() > 0:
 # track previous room
+    print("stack is running")
+    if limit_break > 500:
+        break
     start_room = s.pop()
     # player current room
     # exits = player.get_exits
@@ -75,6 +80,7 @@ while s.size() > 0:
     unexplored_exits = [way for way in traversal_graph[start_room] if traversal_graph[start_room][way] == '?']
     # # if direction == '?' continue you dft
     if len(unexplored_exits) > 0:
+        print("unexplored in stack", unexplored_exits)
         direction = random.choice(unexplored_exits)
         # player.travel(direction)
         player.travel(direction)
@@ -85,16 +91,17 @@ while s.size() > 0:
         traversal_graph[start_room][direction] = player.current_room.id
         # may need to if not in my graph here but will try without first
         next_paths = player.current_room.get_exits()
-        traversal_graph[next_room] = {}
-        for pathway in next_paths:
-            traversal_graph[next_room][pathway] = '?'
+        if next_room not in traversal_graph:
+            traversal_graph[next_room] = {}
+            for pathway in next_paths:
+                traversal_graph[next_room][pathway] = '?'
         # record where you came from 
         # traversal graph[current room][opposite direction] = prev room id 
         # I was in x, went y direction, now in z room
         traversal_graph[next_room][reverse[direction]] = start_room
-
         # repeat to dead end
         s.push(next_room)
+        limit_break += 1
     # else do bfs
     else:
         print(traversal_graph)
@@ -104,26 +111,32 @@ while s.size() > 0:
         q.enqueue(location)
 
         while q.size() > 0:
+            print("queue running")
+            if limit_break > 500:
+                break        
             current_location = q.dequeue()
             print(traversal_graph[current_location])
             print(player.current_room.get_exits())
             exits = player.current_room.get_exits()
             unexplored_exits = [way for way in traversal_graph[current_location] if traversal_graph[current_location][way] == '?']
-            print(unexplored_exits)
             if len(unexplored_exits) < 1:
                 direction = random.choice(exits)
-                print(direction)
                 player.travel(direction)
+                traversal_path.append(direction)
                 print(player.current_room.id)
                 next_room = player.current_room.id
                 q.enqueue(next_room)
             else:
                 print("unexplored", unexplored_exits)
                 direction = random.choice(unexplored_exits)
+                print(direction)
                 player.travel(direction)
+                traversal_path.append(direction)
                 next_path = player.current_room.id
                 s.push(next_path)
+            limit_break += 1
              
+print("traversal", traversal_graph)
 
 
     # bfs
