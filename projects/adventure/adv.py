@@ -8,15 +8,15 @@ dirpath = os.path.dirname(os.path.abspath(__file__))
 
 import random
 from ast import literal_eval
-from util import Stack
+from util import Stack, Queue
 
 # Load world
 world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = dirpath + "/maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
+# map_file = dirpath + "/maps/test_line.txt"
+map_file = dirpath + "/maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = dirpath + "/maps/main_maze.txt"
@@ -62,50 +62,69 @@ s.push(press_start)
 while s.size() > 0:
 # track previous room
     start_room = s.pop()
-    print(start_room)
     # player current room
     # exits = player.get_exits
     exits = player.current_room.get_exits()
-    print(exits)
     if start_room not in traversal_graph:
         traversal_graph[start_room] = {}
         for pathway in exits:
             traversal_graph[start_room][pathway] = '?'
     # direction = random n e s w random
     # traverse to room player.travel(direction)
-    print(room_graph)
-    print(traversal_graph)
     # filter directions to only be random unexplored
     unexplored_exits = [way for way in traversal_graph[start_room] if traversal_graph[start_room][way] == '?']
     # # if direction == '?' continue you dft
     if len(unexplored_exits) > 0:
         direction = random.choice(unexplored_exits)
-        print(direction)
         # player.travel(direction)
         player.travel(direction)
         traversal_path.append(direction)
         next_room = player.current_room.id
-        print(start_room)
-        print(next_room)
         # record where you went
         # traversal graph[prev room][direction] = current room id
         traversal_graph[start_room][direction] = player.current_room.id
-        print(traversal_graph)
         # may need to if not in my graph here but will try without first
         next_paths = player.current_room.get_exits()
         traversal_graph[next_room] = {}
         for pathway in next_paths:
             traversal_graph[next_room][pathway] = '?'
-        print(traversal_graph)
         # record where you came from 
         # traversal graph[current room][opposite direction] = prev room id 
         # I was in x, went y direction, now in z room
         traversal_graph[next_room][reverse[direction]] = start_room
-        print(traversal_graph)
 
+        # repeat to dead end
         s.push(next_room)
-    # repeat to dead end
-    # else do bfs 
+    # else do bfs
+    else:
+        print(traversal_graph)
+        print(player.current_room.id)
+        location = player.current_room.id
+        q = Queue() 
+        q.enqueue(location)
+
+        while q.size() > 0:
+            current_location = q.dequeue()
+            print(traversal_graph[current_location])
+            print(player.current_room.get_exits())
+            exits = player.current_room.get_exits()
+            unexplored_exits = [way for way in traversal_graph[current_location] if traversal_graph[current_location][way] == '?']
+            print(unexplored_exits)
+            if len(unexplored_exits) < 1:
+                direction = random.choice(exits)
+                print(direction)
+                player.travel(direction)
+                print(player.current_room.id)
+                next_room = player.current_room.id
+                q.enqueue(next_room)
+            else:
+                print("unexplored", unexplored_exits)
+                direction = random.choice(unexplored_exits)
+                player.travel(direction)
+                next_path = player.current_room.id
+                s.push(next_path)
+             
+
 
     # bfs
     # check list of unexplored exits
