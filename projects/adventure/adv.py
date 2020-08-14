@@ -101,36 +101,44 @@ while s.size() > 0:
         # repeat to dead end
         s.push(next_room)
 
-    # else do bfs
-    else:
-        print(traversal_graph)
-        print(player.current_room.id)
-        location = player.current_room.id
-        print("CURRENT",traversal_graph[location])
-        q = Queue() 
-        q.enqueue(location)
+    # else do bfs for the first room that has a '?'
 
-        while q.size() > 0 or len(traversal_graph) < len(room_graph):
-            print("queue running")      
-            current_location = q.dequeue()
-            print(player.current_room.get_exits())
-            exits = player.current_room.get_exits()
-            unexplored_exits = [way for way in traversal_graph[current_location] if traversal_graph[current_location][way] == '?']
-            if len(unexplored_exits) < 1:
-                direction = random.choice(exits)
-                player.travel(direction)
-                traversal_path.append(direction)
-                print(player.current_room.id)
-                next_room = player.current_room.id
-                q.enqueue(next_room)
-            else:
-                print("unexplored", unexplored_exits)
-                direction = random.choice(unexplored_exits)
-                print(direction)
-                player.travel(direction)
-                traversal_path.append(direction)
-                next_path = player.current_room.id
-                s.push(next_path)
+
+
+
+
+
+
+
+    # else:
+    #     print(traversal_graph)
+    #     print(player.current_room.id)
+    #     location = player.current_room.id
+    #     print("CURRENT",traversal_graph[location])
+    #     q = Queue() 
+    #     q.enqueue(location)
+
+    #     while q.size() > 0:
+    #         print("queue running")      
+    #         current_location = q.dequeue()
+    #         print(player.current_room.get_exits())
+    #         exits = player.current_room.get_exits()
+    #         unexplored_exits = [way for way in traversal_graph[current_location] if traversal_graph[current_location][way] == '?']
+    #         if len(unexplored_exits) < 1:
+    #             direction = random.choice(exits)
+    #             player.travel(direction)
+    #             traversal_path.append(direction)
+    #             print(player.current_room.id)
+    #             next_room = player.current_room.id
+    #             q.enqueue(next_room)
+    #         else:
+    #             print("unexplored", unexplored_exits)
+    #             direction = random.choice(unexplored_exits)
+    #             print(direction)
+    #             player.travel(direction)
+    #             traversal_path.append(direction)
+    #             next_path = player.current_room.id
+    #             s.push(next_path)
 
 print("traversal", traversal_graph)
 
