@@ -73,34 +73,44 @@ while s.size() > 0:
             traversal_graph[start_room][pathway] = '?'
     # direction = random n e s w random
     # traverse to room player.travel(direction)
+    print(room_graph)
     print(traversal_graph)
-    # filter directions to only be unexplored
-    unexplored_exits = [way for way in traversal_graph[start_room] if way == '?']
+    # filter directions to only be random unexplored
+    unexplored_exits = [way for way in traversal_graph[start_room] if traversal_graph[start_room][way] == '?']
     direction = random.choice(unexplored_exits)
     print(direction)
-    # if direction == '?'
-    player.travel(direction)
-    traversal_path.append(direction)
-    # print(start_room)
-    # print(player.current_room.id)
-    # record where you went
-    # traversal graph[prev room][direction] = current room id
-    # traversal_graph[start_room][direction] = player.current_room.id
-    # print(traversal_graph)
-    # record where you came from 
-    # traversal graph[current room][opposite direction] = prev room id
-    # I was in x, went y direction, now in z room
-    # if traversal_graph[player]
-    # traversal_graph[player.current_room.id][reverse[direction]] = start_room
-    # print(traversal_graph)
+    # # if direction == '?' continue you dft
+    if len(unexplored_exits) > 0:
+        # player.travel(direction)
+        player.travel(direction)
+        traversal_path.append(direction)
+        next_room = player.current_room.id
+        print(start_room)
+        print(next_room)
+        # record where you went
+        # traversal graph[prev room][direction] = current room id
+        traversal_graph[start_room][direction] = player.current_room.id
+        print(traversal_graph)
+        # may need to if not in my graph here but will try without first
+        next_paths = player.current_room.get_exits()
+        traversal_graph[next_room] = {}
+        for pathway in next_paths:
+            traversal_graph[next_room][pathway] = '?'
+        print(traversal_graph)
+        # record where you came from 
+        # traversal graph[current room][opposite direction] = prev room id 
+        # I was in x, went y direction, now in z room
+        traversal_graph[next_room][reverse[direction]] = start_room
+        print(traversal_graph)
     # repeat to dead end
+    # else do bfs 
 
     # bfs
     # check list of unexplored exits
     # if no value == '?'
 
 
-    s.push(player.current_room.id)
+    # s.push(player.current_room.id)
 
 
 
