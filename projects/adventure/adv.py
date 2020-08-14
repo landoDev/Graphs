@@ -52,54 +52,84 @@ traversal_path = []
 # print("BRUH")
 
 press_start = player.current_room.id
+turn_around = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+s = Stack()
+s.push(press_start)
+
+# travel log loop
+# track previous room
+# direction = random n e s w
+# traverse to room player.travel(direction)
+# player current room
+# exits = player.get_exits
+# add room: ['n': '?']
+# if direction == '?'
+# record where you went
+# traversal graph[prev room][direction] = current room id
+# record where you came from 
+# traversal graph[current room][opposite direction] = prev room id
+# I was in x, went y direction, now in z room
+# repeat to dead end
+# check list of unexplored exits
+# if no value == '?'
+# look at log, go back until 
+# need a travel log, list or dictionary
+    # i.e I've gone north from room 1
+    # key is room value is traveled direction
+    # (1, 'n')
+    # recurse
 
 # s = Stack()
-s = Stack()
-visited = set()
-explored = {}
-s.push(press_start)
 
 # # I DON'T KNOW HOW TO TRACK THE ROOM => See BRUH print above. Finally thought to print it
 # while s.size() > 0
 
-while s.size() > 0:
-    # print(visited)
-    room = s.pop()
-    exits = player.current_room.get_exits()
-    unexplored = []
-    # print("room",room) # room is id... do I want the path?
-    # print(room_graph[room])
-    # print(player.current_room.get_exits())
-    if room not in visited:
-        # visited[room] = {}
-        visited.add(room)
-        # pick a random unexplored direction in the room
-        # use random sampling
-        if len(exits) == 1:
-            direction = exits[0]
-        else:
-            rand_index = random.randint(0, len(exits) - 1)
-            direction = exits[rand_index]
-        print("direction", direction)
-    # append the direction key to traversal_path
-        traversal_path.append(direction)
-        # print(traversal_path)
-        # mark the path as explored
-        if direction not in explored:
-            explored[room] = [direction]
-        elif direction in explored[room]:
-            find_unexplored = [way for way in exits if way not in explored[room]]
-            print("filtered explored", find_unexplored)
-        else:
-            find_unexplored = [way for way in exits if way not in explored[room]]
-            print("filtered explored", find_unexplored)
-            print("this ran")
-            explored[room].append(direction)
-        print("explored", explored)
-        # travel to that direction
-        
-        player.travel(direction)
-        s.push(player.current_room.id)
+# while s.size() > 0:
+#     # print(visited)
+#     room = s.pop()
+#     exits = player.current_room.get_exits()
+#     # print("room",room) # room is id... do I want the path?
+#     # print(room_graph[room])
+#     # print(player.current_room.get_exits())
+#     if room not in visited:
+#         visited.add(room)
+#         # pick a random unexplored direction in the room
+#         # use random sampling
+#         if len(exits) == 1:
+#             direction = exits[0]
+#         else:
+#             rand_index = random.randint(0, len(exits) - 1)
+#             direction = exits[rand_index]
+#         print("direction", direction)
+#     # append the direction key to traversal_path
+#         traversal_path.append(direction)
+#         # print(traversal_path)
+#         # mark the path as explored
+#         if direction not in explored:
+#             explored[room] = [direction]
+#         print("explored", explored)
+#         # travel to that direction
+#         player.travel(direction)
+#         if player.current_room.id not in visited:
+#             s.push(player.current_room.id)
+#         else:
+#             print(direction)
+#             print("turnaround",turn_around[direction])
+#             # player.travel(turn_around[direction])
+#             find_unexplored = [way for way in exits if way not in explored[player.current_room.id]]
+#             print("unexplored", find_unexplored)
+#             if len(find_unexplored) > 0:
+#                 direction = find_unexplored[0]
+#             # else:
+#             #     rand_index = random.randint(0, len(exits) - 1)
+#             #     direction = exits[rand_index]
+#             print("direction in else",direction)
+#             explored[room].append(direction)
+#             print("room before travel", player.current_room.id)
+#             player.travel(direction) # this isn't travelling sometimes
+#             print("current room", player.current_room.id)
+#             print(visited)
+#             s.push(player.current_room.id)
 # bfs to nearest unexplored room
 # while queue isn't empty
     # if the path is in 
