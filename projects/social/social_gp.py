@@ -28,13 +28,17 @@ class SocialGraph:
         """
         Creates a bi-directional friendship
         """
+        # LINEAR REFACTOR
         if user_id == friend_id:
-            print("WARNING: You cannot be friends with yourself")
+            # print("WARNING: You cannot be friends with yourself")
+            return False
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
-            print("WARNING: Friendship already exists")
+            # print("WARNING: Friendship already exists")
+            return False
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
+            return True
 
     def add_user(self, name):
         """
@@ -43,6 +47,31 @@ class SocialGraph:
         self.last_id += 1  # automatically increment the ID to assign the new user
         self.users[self.last_id] = User(name)
         self.friendships[self.last_id] = set()
+
+    # Linear populate refactor
+    def populate_graph_linear(self, num_users, avg_friendships):
+        self.last_id = 0
+        self.users = {}
+        self.friendships = {}
+
+        # size of for loop
+        target_friendships = (num_users * avg_friendships)
+        # counter
+        total_friendships = 0
+        # counter
+        collisions = 0
+
+        while total_friendships < target_friendships:
+            # random sampling
+            user_id = random.randint(1, self.last_id)
+            friend_id = random.randint(1, self.last_id)
+
+            # can use this in if
+            if self.add_friendship(user_id, friend_id):
+                total_friendships += 2
+            else:
+                collisions += 1
+        print(f"Collisions: {collisions}")
 
     def populate_graph(self, num_users, avg_friendships):
         """
@@ -104,46 +133,37 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
        
-        # key word: SHORTEST => use bfs (bft?)
-        # looking for a path output (the shortest this time)
-        # create an empty queue and enqueue PATH to the Starting vetex ID
+        # you can do a traversal if you don't need to find something
         q = Queue()
-        # q.enqueue([]) # making it into a list
+        visited = {}
         q.enqueue([user_id])
 
-        # create a set to store visited vertices
-        # key probably needs to be each of the users friends with the value being the list of paths
-        ## or value needs to be the shortest path
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
-   
-        # while queue is not empty
         while q.size() > 0:
-            # dequeue the first PATH (value)
-            value = q.dequeue()
-            # grab the last key from the path
-            key = value[-1]
-            # check if the key has not been visited (the ability to break out)
-            if key not in visited:
-                # mark it as visited
-                # print(self.friendships[key])
-                print("value",value)
-                print("list",list(self.friendships[key]))
-                visited[key] = value
-                # then add a PATH (value) to its neighbors to the back of the queue
-                # need to add the value of the key's neighbors
-                for friend in visited[key]:
-                #     # make a copy of the path
-                    value_copy = list(value)
-                    # append the neighbor to the back of the path
-                    value_copy.append(friend)
-                    q.enqueue(value_copy)
+            path = q.dequeue()
+            v = path[-1]
+
+            if v not in visited:
+                # we want a key and a value
+                visited[v] = path
+                
+                # get neighbors (get friends)
+                for friend in self.friendships[v]:
+                    path_copy = list(path) # can also do path.copy()
+                    path_copy.append(friend)
+                    q.enqueue(path_copy)
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
-    print(sg.friendships)
+    num_users = 2000
+    avg_friendships = 300
+    sg.populate_graph_linear(1000, 300)
+    # print(sg.friendships)
     connections = sg.get_all_social_paths(1)
-    print(connections)
+    print(f"Users in extended social network: {len(connections) -1}")
+    total_social_paths = 0
+    for user_id in connections:
+        total_social_paths += len(connections[user_id])
+    # print(connections)
