@@ -16,10 +16,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = dirpath + "/maps/test_line.txt"
-# map_file = dirpath + "/maps/test_cross.txt"
+map_file = dirpath + "/maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = dirpath + "/maps/main_maze.txt"
+# map_file = dirpath + "/maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -54,6 +54,7 @@ traversal_path = []
 press_start = player.current_room.id
 reverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 traversal_graph = {}
+explored = {}
 s = Stack()
 s.push(press_start)
 limit_break = 0
@@ -64,8 +65,6 @@ print("path start")
 while s.size() > 0:
 # track previous room
     print("stack is running")
-    if limit_break > 500:
-        break
     start_room = s.pop()
     # player current room
     # exits = player.get_exits
@@ -101,21 +100,19 @@ while s.size() > 0:
         traversal_graph[next_room][reverse[direction]] = start_room
         # repeat to dead end
         s.push(next_room)
-        limit_break += 1
+
     # else do bfs
     else:
         print(traversal_graph)
         print(player.current_room.id)
         location = player.current_room.id
+        print("CURRENT",traversal_graph[location])
         q = Queue() 
         q.enqueue(location)
 
-        while q.size() > 0:
-            print("queue running")
-            if limit_break > 500:
-                break        
+        while q.size() > 0 or len(traversal_graph) < len(room_graph):
+            print("queue running")      
             current_location = q.dequeue()
-            print(traversal_graph[current_location])
             print(player.current_room.get_exits())
             exits = player.current_room.get_exits()
             unexplored_exits = [way for way in traversal_graph[current_location] if traversal_graph[current_location][way] == '?']
@@ -134,8 +131,7 @@ while s.size() > 0:
                 traversal_path.append(direction)
                 next_path = player.current_room.id
                 s.push(next_path)
-            limit_break += 1
-             
+
 print("traversal", traversal_graph)
 
 
