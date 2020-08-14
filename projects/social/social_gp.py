@@ -157,8 +157,10 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
+    num_users = 2000
+    avg_friendships = 300
     sg.populate_graph_linear(1000, 300)
-    print(sg.friendships)
+    # print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(f"Users in extended social network: {len(connections) -1}")
     total_social_paths = 0

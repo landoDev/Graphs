@@ -70,7 +70,7 @@ class SocialGraph:
         possible_friends = []
 
         # avoid duplicates by ensuring first num < second num, 
-        # loop through users and 
+        # loop through users  
         for user_id in self.users:
             #  for each user id
             ## ensures that lowest num is always the first value in tuple
@@ -126,12 +126,11 @@ class SocialGraph:
             # check if the key has not been visited (the ability to break out)
             if key not in visited:
                 # mark it as visited
-                print(self.friendships[key])
-                visited[key] = list(self.friendships[key])
+                # print(self.friendships[key])
+                print("value",value)
+                print("list",list(self.friendships[key]))
+                visited[key] = value
                 # then add a PATH (value) to its neighbors to the back of the queue
-                # print("friendships", self.friendships)
-                # print("value", value)
-                # print("visited", visited)
                 # need to add the value of the key's neighbors
                 for friend in visited[key]:
                 #     # make a copy of the path

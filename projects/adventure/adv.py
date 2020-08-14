@@ -58,8 +58,14 @@ explored = {}
 current_path = []
 
 def traverse(starting_point):
+    # base case
+    if len(explored) == len(room_graph):
+        return
+
     s = Stack()
     s.push(starting_point)
+    # reset current path
+    # current_path = []
     # travel log loop
     # while len(traversal_path) < len(room_graph):
 
@@ -78,7 +84,14 @@ def traverse(starting_point):
         # direction = random n e s w random
         # traverse to room player.travel(direction)
         # filter directions to only be random unexplored
-        unexplored_exits = [way for way in traversal_graph[start_room] if traversal_graph[start_room][way] == '?']
+        # unexplored_exits = [way for way in traversal_graph[start_room] if traversal_graph[start_room][way] == '?']
+        print("this rooms ways",traversal_graph[start_room])
+        unexplored_exits = []
+        for way in traversal_graph[start_room]:
+            if traversal_graph[start_room][way] == '?':
+                unexplored_exits.append(way)
+
+        print("unexplored after initialization", unexplored_exits)
         # # if direction == '?' continue you dft
         if len(unexplored_exits) > 0:
             print("unexplored in stack", unexplored_exits)
@@ -104,10 +117,15 @@ def traverse(starting_point):
             # repeat to dead end
             s.push(next_room)
 
-# initial traversal
-traverse(press_start)
-print(player.current_room.id)
+    # look for the next '?'
+    
+    next_traverse = find_unexplored(player.current_room.id)
+    print("next", next_traverse)
+    traverse(next_traverse)
+        
 
+
+# infinite loop is happening here
 def find_unexplored(starting_point):
     # end point is "?", return the shortest path to "?"
     q = Queue()
@@ -120,7 +138,9 @@ def find_unexplored(starting_point):
 
     while q.size() > 0:
         room = q.dequeue()
-        print("room in queue", room)
+        print("match room", room)
+        # print("should be opposite", route_back)
+        print("match player", player.current_room.id)
         # = room[-1]
         # print("last_vertex",direction)
         # print("explored", explored)
@@ -131,27 +151,44 @@ def find_unexplored(starting_point):
         print("this room?",list(explored_room))
 
         if room not in explored:
-            print("match",room)
+            print("match room",room)
             for way in explored_room[room]:
                 check = list(way.values())
                 print("check", check[-1])
                 if check[-1] == '?':
                     return room # this return will give me what I need to traverse again
             explored[room] = list(traversal_graph[room])
+            print("status of explored in bfs",explored)
         if len(current_path) > 0:
             direction = current_path.pop()
             back_track = reverse[direction]
             print("back_track", back_track)
             player.travel(back_track)
             traversal_path.append(back_track)
-        q.enqueue(player.current_room.id)
+            q.enqueue(player.current_room.id)
         print("traversal", traversal_path)
         print("current", current_path)
-        print("match room", room)
-        # print("should be opposite", route_back)
-        print("match player", player.current_room.id)
 
-find_unexplored(player.current_room.id)
+
+# initial traversal
+# while len(explored) < len(room_graph):
+# limit_break = 0
+
+# print("EXPLORED LEN",len(explored))
+traverse(press_start)
+# next_traverse = find_unexplored(player.current_room.id)
+# print("next", next_traverse)
+# traverse(next_traverse)
+# while len(explored) < len(room_graph):
+#     if limit_break > 10:
+#         break
+#     traverse(press_start)
+#     print("LEN of my graph", len(explored))
+#     print("LEN of room graph", len(room_graph))
+#     next_traverse = find_unexplored(player.current_room.id)
+#     print("next", next_traverse)
+#     traverse(next_traverse)
+#     limit_break += 1
 
     # else do bfs for the first room that has a '?'
 
